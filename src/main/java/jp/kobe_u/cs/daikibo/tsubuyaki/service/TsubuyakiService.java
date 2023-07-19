@@ -14,6 +14,7 @@ import jp.kobe_u.cs.daikibo.tsubuyaki.repository.TsubuyakiRepository;
 public class TsubuyakiService {
     @Autowired
     TsubuyakiRepository repo; //レポジトリ
+
     //つぶやきを投稿
     public Tsubuyaki postTsubuyaki(Tsubuyaki t) {
         //名前がない場合の業務ロジック
@@ -24,11 +25,18 @@ public class TsubuyakiService {
         t.setCreatedAt(new Date()); //作成日時をセット
         return repo.save(t); //セーブしたオブジェクトを返却
     }
+
     //全つぶやきを取得
     public List<Tsubuyaki> getAllTsubuyaki() {
         Iterable<Tsubuyaki> found = repo.findAll();
         ArrayList<Tsubuyaki> list = new ArrayList<>();
         found.forEach(list::add);
+        return list;
+    }
+
+    //指定したキーワードを含むつぶやきを取得
+    public List<Tsubuyaki> getTsubuyakiContaining(String keyword) {
+        List<Tsubuyaki> list = repo.findByCommentContaining(keyword);
         return list;
     }
 }
